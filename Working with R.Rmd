@@ -1,0 +1,488 @@
+---
+title: 'Introduction to R'
+author: 'Caroline Hutchings'
+date: "`r format(Sys.Date(), '%B %d, %Y')`"
+output: 
+  html_document: 
+    code_folding: show
+    theme: 'flatly'
+    toc: true
+    toc_float: true
+
+---
+## What is R? {.tabset}
+**AI Definition:**
+
+R is a programming language and free software environment primarily used for statistical computing and graphics. It is widely utilized among statisticians, data scientists, and researchers for developing statistical software and data analysis.
+
+### Key Features of R:
+- **Built-in Statistics Functions**
+  * Provides a variety of statistical tests, such as t-tests, ANOVA, etc.
+- **Visualization Capabilities**
+  * Tools like `ggplot2` facilitate high-quality visualizations.
+- **Expanded Capabilities through Added Libraries**
+  * Thousands of packages are available on CRAN.
+- **Integration with Other Tools, such as SQL**
+  * Connects with databases for efficient data manipulation.
+  
+### Applications of R:
+- **Data Science**
+- **Statistics**
+- **Academic Research**
+- **Business Analytics**
+- **Bioinformatics**
+- **Finance**
+
+## RStudio Environment
+
+- **Source Pane**
+  - Top left corner
+  - Used for writing and editing R scripts and RMarkdown documents.
+  
+- **Console Pane**
+  - Bottom left corner
+  - Executes R commands interactively.
+
+- **Environment/History Pane**
+  - Top right corner
+  - **Environment Tab**: Displays variables and objects in memory.
+  - **History Tab**: Shows command history for the current session.
+
+- **Files/Plots/Packages/Help/Viewer Pane**
+  - Bottom right corner
+  - **Files Tab**: Navigate and manage files in the working directory.
+  - **Plots Tab**: Displays visual outputs and allows interaction with plots.
+  - **Packages Tab**: Lists installed packages; enables installation and loading.
+  - **Help Tab**: Access to R documentation and function help.
+  
+## What is RMarkdown?
+
+- RMarkdown is an authoring format that allows you to combine text, code, and output in a single document.
+
+## Key Features of RMarkdown
+- **Output Control**: The use of chunk options like message=FALSE, echo=FALSE, warning=FALSE, and results=FALSE enables users to suppress messages, code display, warnings, and results in the final document, allowing for a cleaner and more focused presentation of content.
+- **Multiple Output Formats**: Create documents in formats such as HTML, PDF, Word, and PowerPoint.
+- **Easy Text Formatting**: Text can be formatted using Markdown Syntax.
+- **Integration with R Packages**: Supports R packages like **'ggplot2** for visualization, **'knitr'** for report generation and **'dplyr'** for data manipulation.
+- **Interactive Features**: Interactive elements, such as plots users can zoom, can be included in reports.
+
+## How to Use RMarkdown
+
+- **Creating an RMarkdown Document**:
+  - In RStudio, navigate to **File -> New File -> R Markdown…** to create a new document.
+
+- **Writing and Editing**:
+  - Write your text using Markdown syntax.
+  - Insert R code chunks by navigating to **+C** and add an R chunk.
+  - Structure your document with headers for organization.
+
+- **Knit the Document**:
+  - Click the **"Knit"** button to generate the output in your desired format (HTML, PDF, Word, PowerPoint, etc.).
+
+## Format Header in RMarkdown
+
+#### Key Components of the Header
+
+- **title**: Sets the title of your document.
+- **author**: Specifies the author's name.
+- **date**: Format the date automatically using R code.
+- **output**: Defines the output format (e.g., PDF, HTML, PowerPoint).
+
+## Example Header
+
+```yaml
+---
+title: "Your Presentation Title"
+author: "Your Name"
+date: "`r format(Sys.Date(), '%B %d, %Y')`"
+output: 
+  html_document:
+    theme: "cosmo"  
+---
+
+```
+## Vectors
+
+- Create a vector of numbers using assignment operator
+```{r message=FALSE, echo=FALSE, warning=FALSE, results=FALSE}
+nums <- c(1,2,3) #assignment operator
+nums
+```
+- Create a vector of strings
+```{r}
+week <- c('Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday')
+```
+- Create a vector with a range of numbers
+```{r}
+seq(1,10)
+```
+- Length of vector
+```{r}
+length(week)
+```
+## Working with Vectors
+
+- Create a named vector
+```{r}
+temps <- c('Mon'=88, 'Tue'=93, 'Wed'=95, 'Thu'=91, 'Fri'=86)
+temps
+```
+- Retrieve names of vector
+```{r}
+names(temps)
+```
+- Add values to a vector
+```{r}
+temps <- append(temps, c('Sa'=81, 'Su'=78))
+temps
+```
+## Indexing
+
+- Identify item at specific index
+```{r}
+week[1]
+```
+- All items except at specified index
+```{r}
+week[-2]
+```
+- All items in vector of indexes
+```{r}
+week[c(1,3,5)]
+```
+
+
+## Working with Vector Operators
+
+- Relational Operators
+```{r}
+temps == 81
+temps > 88
+temps != 81
+```
+
+- Write code to shorten the names of temps 
+```{r }
+names(temps) <- c('M', 'T', 'W', 'Th', 'F')
+temps
+```
+
+- Write code to select temperature of Friday
+```{r}
+temps['F']
+temps[5]
+```
+## Dataframes
+
+- Create a dataframe from vectors
+```{r}
+months <- c('Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec')
+num_days <- c(31,28,31,30,31,30,31,31,30,31,30,31)
+seasons <- c('W', 'W', 'Sp', 'Sp', 'Sp', 'Su', 'Su', 'Su', 'F', 'F', 'F', 'W')
+calendar_df <- data.frame(Month = months, NumDays = num_days, Season=seasons)
+calendar_df
+
+```
+## Dataframe Manipulations
+
+- Add rows to a dataframe
+```{r}
+calendar_df <- rbind(calendar_df, list('NewJan', 31, 'Bonus'), list('NewFeb', 29, 'Bonus'))
+calendar_df
+```
+- Add columns to a dataframe
+```{r}
+avg_temp <- c(52.3, 56.1, 62, 68.9, 75.9, 80.7, 81.9, 82.7, 78.5, 70.7, 61.1, 54.3, 0, 0)
+calendar_df <- cbind(calendar_df, AvgTemp = avg_temp)
+calendar_df
+```
+## Logical Operators
+
+- Find Months with 30 days that are warmer than 70 degrees.
+- Find Months that have a temperature lesss than 70 degrees or are summer months.
+```{r}
+calendar_df$AvgTemp >=70 & calendar_df$NumDays==30 #AND
+calendar_df$AvgTemp <=70 | calendar_df$Season=='Su'
+```
+## Dataframe Application
+
+- Find proportion of months with 31 days that are above 70 degrees.
+- Find proportion of months that have less than 31 days or are above 70 degrees.
+
+## Tidyverse
+
+- Tidyverse is a set of packages that facilitate data science tasks in R. The main focus is on providing tools for data manipulation, exploration, and visualization in a cohesive and consistent way.
+
+- **Tidy Data**: Where each variable is a column, each observation is a row, and each type of observational unit forms a table. This structure makes it easier to work with and visualize data.
+  - **Tibble**: modern, user-friendly version of data frames in R that adheres to the principles of tidy data. 
+- **Modularity** : Allowing users to load only the packages they need for specific tasks, making the workflow more efficient.
+
+## Core Components of Tidyverse
+
+- **ggplot2**: 
+  - Purpose: Data visualization
+  - Features: Provides a coherent system for creating graphs
+  - Usage: Create complex visualizations by layering
+- **dplyr**:
+  - Purpose: Data manipulation
+  - Functions: select, filter, etc. to manipulate tibbles.
+- **tidyr**: 
+  - Purpose: Data tidying
+  - Functions: pivot_longer, pivot_wider, etc. help reshape data into a tidy format.
+- **readr**:
+  - Purpose: Data import
+  - Functions: read_csv, write_csv, read_delim, etc. imports data into a tibble by default.
+- **readxl**:
+  - Purpose: Import excel data
+  - Functions: read_excel imports data into a tibble by default.
+  
+## Essential Tidyverse Functions
+
+### Key Functions in dplyr
+
+- **mutate()**
+  - Adds or modifies columns in a data frame.
+
+- **filter()**
+  - Subsets rows based on specified conditions.
+
+- **select()**
+  - Chooses specific columns from a data frame.
+
+- **summarize()**
+  - Generates summary statistics for variables.
+
+- **arrange()**
+  - Sorts data by one or more columns.
+
+- **group_by()**
+  - Groups data for analysis, facilitating operations like summarization.
+  
+- **piping (%>%)**
+  - Allows for chaining multiple dplyr functions together.  Passes the output of one function directly to the next, enhancing readability and efficiency in data manipulation.
+  
+## Dataframe Vs Tibble
+
+Tibbles are designed for a more user-friendly experience in managaing and analyzing data, especially larger data sets.  To check if tibble -> is_tibble(df)
+
+#### Tibble
+- Printing: Displays first 10 rows
+- Column Types: Displays column types alongside data
+- Subsetting: Maintains tibble structure when subsetting
+- Design: Use with Tidyverse
+- Handling of Data: Enforces stricter rules
+
+#### Dataframe
+- Printing: Displays all rows
+- Column Types: Does not display column types
+- Subsetting: Converts to vector when single row selected
+- Design: Use with base R
+- Handling of Data: More flexible
+
+```{r}
+library(tidyverse)
+#convert a dataframe to a tibble
+calendar_tibble <- as_tibble(calendar_df)
+is_tibble(calendar_tibble)
+is_tibble(calendar_df)
+```
+
+
+## Load Data Set
+
+- Load data using Kaggle API Token
+
+```{r}
+#install.packages("httr")
+#install.packages("jsonlite")
+library(httr)
+setwd("C:/Users/cbhut/.kaggle/")
+list.files()
+
+system("kaggle datasets download -d zeeshier/student-admission-records")
+unzip("student-admission-records.zip") 
+student_admission <- read_csv("student_admission_record_dirty.csv")  
+is_tibble(student_admission)
+
+```
+- Download data to computer and load data set
+```{r}
+setwd("C:/Users/cbhut/Downloads/") #set to location of file
+student_admission <- read_csv("student_admission_record_dirty.csv") 
+is_tibble(student_admission)
+student_admission
+```
+## View Data in Spreadsheet Format
+
+- View data in interactive window
+```{r}
+View(student_admission)
+```
+- Features of the View(df) :
+  - Column Headings : Each column in the data frame is represented as a header in the viewer.
+  - Data Rows : Each row of data corresponds to an observation and is displayed in a horizontal format.
+  - Scrolling : You can scroll through both the rows and columns if your data frame is larger than the viewing area.
+  - Sorting : You can click on column headers to sort the data in ascending or descending order.
+  - Filtering : Depending on the interface, you might be able to filter data directly through the viewer.
+  
+## Missing Data
+
+- Check for missing data
+```{r}
+#count of rows that have missing name
+sum(is.na(student_admission$Name))
+
+#count of NA values for all columns
+student_admission %>% 
+  apply(MARGIN = 2, function(col) sum(is.na(col)))
+
+#count of rows with one or more missing values
+sum(!complete.cases(student_admission))
+
+#drop rows with one or more missing values
+student_admission_dropna <- student_admission %>% 
+  filter(complete.cases(student_admission))
+nrow(student_admission_dropna)
+```
+- Replace missing values with 'Unknown'
+```{r}
+#replace Name with 'Unknown'
+student_admission_replace_na <- student_admission %>% 
+  mutate(Name = replace_na(Name, 'Unknown'))
+
+nrow(student_admission_replace_na)
+
+sum(!complete.cases(student_admission_replace_na))
+
+
+#replace Name and Admission Status with 'Unknown'
+student_admission_replace_na_two <- student_admission %>% 
+  mutate(across(c(Name, `Admission Status`),~ replace_na(.,'Unknown')))
+
+nrow(student_admission_replace_na_two)
+
+sum(!complete.cases(student_admission_replace_na_two))
+
+```
+## Basketball Example 
+
+An example from Murach's R for Data Analysis Book. Install packages and libraries
+```{r}
+#install.packages("RJSONIO")
+library(tidyverse)
+library(RJSONIO)
+
+
+```
+## Load Data from JSON File
+```{r}
+# Download the JSON data
+url <- "https://www.murach.com/python_analysis/shots.json"
+download.file(url, "shots.json")
+
+# Load the JSON data into R
+json_data <- fromJSON("shots.json")
+columnname <- json_data[["resultSets"]][[1]][["headers"]]
+rows_data <- json_data[["resultSets"]][[1]][["rowSet"]]
+
+#Create empty dataframe
+shots <- data.frame()
+
+#Loop through each row and add to dataframe
+for (row in rows_data){
+  shots <- rbind(shots, row)
+}
+
+#Set column names
+names(shots) <- columnname
+
+#Change Dataframe to tibble
+shots_tibble <- as_tibble(shots)
+View(shots_tibble)
+
+```
+
+## Manipulate Data
+
+### Examine Count of Unique Values
+```{r}
+#lapply is list apply and apply is column/matrix apply
+apply(X=shots_tibble, MARGIN = 2, FUN = unique) %>% 
+  lapply(FUN = length) %>% str()
+```
+### Examine Unique Values of Shot Flag
+```{r}
+unique(shots_tibble$SHOT_MADE_FLAG)
+```
+### Select and Rename Columns
+```{r}
+shots_tibble <- shots_tibble %>% 
+  select(GAME_DATE, SHOT_TYPE, EVENT_TYPE, SHOT_MADE_FLAG, LOC_X, LOC_Y, SHOT_ZONE_BASIC)
+
+names(shots_tibble) <- c("GameDate", "ShotType", "EventType", "ShotMadeFlag", "LocX", "LocY", "Zone")
+```
+### Change Data Types 
+```{r}
+shots_tibble <- shots_tibble %>% 
+  mutate(GameDate = as.Date(GameDate, format = "%Y%m%d"),
+         ShotMadeFlag = as.logical(ShotMadeFlag))
+
+shots_tibble
+```
+### Create Season Variable and Add to Tibble
+```{r}
+#Create Season Variable
+get_season <- function(row){
+  month <- as.integer(format(as.Date(row["GameDate"]), "%m"))
+  year <- as.integer(format(as.Date(row["GameDate"]), "%Y"))
+  season <- ""
+  if(month > 6){
+    season <- str_c(year, "-", year+1)
+  }
+    else {
+      season <- str_c(year-1, "-", year)
+    }
+  return(season)
+                      
+}
+
+#Add to tibble
+shots_tibble <- shots_tibble %>% 
+  mutate(Season = apply(X=shots_tibble, MARGIN = 1, FUN = get_season))
+```
+### Create Points Columns
+```{r}
+#Create variable points
+shots_tibble <- shots_tibble %>% 
+  mutate(Points = ifelse(ShotMadeFlag ==TRUE, 
+                         ifelse(ShotType == "3PT Field Goal", 3, 2),
+                         0))
+
+#Create three summary columns
+shots_tibble <- shots_tibble %>% 
+  group_by(GameDate) %>% mutate(PointsPerGame = sum(Points),
+                                AttemptedPerGame = n(),
+                                MadePerGame = sum(ShotMadeFlag))
+
+View(shots_tibble)
+```
+### Shot Statistics per Season
+```{r}
+shot_season <- shots_tibble %>% 
+  group_by(Season) %>% 
+  summarize(MeanMade = mean(MadePerGame),
+            MeanAttempted = mean(AttemptedPerGame),
+            MeanPoints = mean(PointsPerGame))
+
+#Shooting percentage per season
+shots_pct_season <- shots_tibble %>% 
+  group_by(Season) %>% 
+  summarize(Made = sum(ShotMadeFlag),
+            Attempted = n()) %>% 
+  mutate(SeasonPct = (Made / Attempted),
+         CumulativePct = (cumsum(Made) / cumsum(Attempted)))
+
+shots_pct_season
+```
+## On Your Own - Airport Example
+
